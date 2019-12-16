@@ -31,12 +31,23 @@ function letterAssigned()
 	fi
 }
 
+function whoPlayFirst()
+{
+	toss=$((RANDOM%2))
+	if [ $toss -eq 0 ]
+	then
+		echo "Player play first"
+	else
+		echo "computer play first"
+	fi
+}
 function main()
 {
 resetBoard
 echo ${TicTacToeBoard[@]}
 letterAssigned
-echo "player : "$player
-echo "Computer : "$computer
+whoPlayFirst
 }
 main
+
+
