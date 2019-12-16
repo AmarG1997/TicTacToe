@@ -12,9 +12,9 @@ computer=""
 
 function resetBoard()
 {
-	for (( places=0; places<$BOARD_SIZE; places++ ))
+	for (( places=1; places<=$BOARD_SIZE; places++ ))
 	do
-		TicTacToeBoard[$places]="-"
+		TicTacToeBoard[$places]=$places
 	done
 }
 
@@ -41,13 +41,24 @@ function whoPlayFirst()
 		echo "computer play first"
 	fi
 }
+
+function displayBoard()
+{
+	echo "....... ....... ......"
+	echo "  "${TicTacToeBoard[1]}"   |   "${TicTacToeBoard[2]}"   |   "${TicTacToeBoard[3]}" "
+	echo "....... ....... ......"
+	echo "  "${TicTacToeBoard[4]}"   |   "${TicTacToeBoard[5]}"   |   "${TicTacToeBoard[6]}" "
+	echo "....... ....... ......"
+	echo "  "${TicTacToeBoard[7]}"   |   "${TicTacToeBoard[8]}"   |   "${TicTacToeBoard[9]}" "
+	echo "....... ....... ......"
+}
+
+
 function main()
 {
 resetBoard
-echo ${TicTacToeBoard[@]}
 letterAssigned
 whoPlayFirst
+displayBoard
 }
 main
-
-
