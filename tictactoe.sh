@@ -7,6 +7,7 @@ NO_OF_ROW_COLUMN=3
 BOARD_SIZE=$(($NO_OF_ROW_COLUMN*$NO_OF_ROW_COLUMN))
 
 declare -a TicTacToeBoard
+
 player=""
 computer=""
 
@@ -14,7 +15,7 @@ function resetBoard()
 {
 	for (( places=1; places<=$BOARD_SIZE; places++ ))
 	do
-		TicTacToeBoard[$places]=$places
+		TicTacToeBoard[$places]=""$places
 	done
 }
 
@@ -53,12 +54,40 @@ function displayBoard()
 	echo "....... ....... ......"
 }
 
+function selectSell()
+{
+	local flag=0
+	counter=1
+	while [ $counter -le 9 ]
+	do
+		read -p "Enter Cell Number" cell
+		if [ ${TicTacToeBoard[$cell]} == "x" ] || [ ${TicTacToeBoard[$cell]} == "0" ]
+		then
+			echo "Select another cell"
+			counter=$(($counter-1))
+		else
+			flag=1
+		fi
+
+		if [ $flag -eq 1 ]
+		then
+			TicTacToeBoard[$cell]=$player
+			counter=$(($counter+1))
+			echo "board display"
+			displayBoard
+		else
+			selectSell
+
+		fi
+	done
+}
 
 function main()
 {
+
 resetBoard
 letterAssigned
 whoPlayFirst
-displayBoard
+selectSell
 }
 main
