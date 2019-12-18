@@ -1,3 +1,4 @@
+
 #!/bin/bash -x
 
 echo "Welcome To The TicTacToe"
@@ -11,6 +12,7 @@ declare -a TicTacToeBoard
 player=""
 computer=""
 nextPlayer=o
+counter=0
 
 function resetBoard()
 {
@@ -156,8 +158,69 @@ function diagonalCheck()
 	done
 	echo $diagonal
 }
-counter=0
 
+function checkOpponentBlockByRow()
+{
+   flag=0
+   for (( i=1; i<=6; i+=3 ))
+   do
+	if [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[$i+1]} ]
+	then
+		TicTacToeBoard[$(($i + 2))]=$computer
+		echo "array ----> ${TicTacToeBoard[@]}"
+		flag=1
+		displayBoard
+
+	elif [ ${TicTacToeBoard[$i+1]} == ${TicTacToeBoard[(($i+2))]} ]
+	then
+		TicTacToeBoard[$i]=$computer
+		flag=1
+      elif [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[$(($i+3))]} ]
+      then
+            TicTacToeBoard[(($i+1))]=$computer
+            flag=1
+      fi
+   done
+   echo $flag
+}
+
+function checkOpponentBlockByColumn()
+{
+	colValue=0
+	for (( i=1; i<4; i++ ))
+	do
+		if [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[$i+3]} ]
+		then
+			TicTacToeBoard[$(($i + 6))]=$computer
+			echo "array ----> ${TicTacToeBoard[@]}"
+			colValue=1
+			displayBoard
+
+		elif [ ${TicTacToeBoard[$i+3]} == ${TicTacToeBoard[(($i+6))]} ]
+		then
+			TicTacToeBoard[$i]=$computer
+			colValue=1
+			displayBoard
+		elif [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[$(($i+6))]} ]
+		then
+			TicTacToeBoard[(($i+3))]=$computer
+			colValue=1
+			displayBoard
+		fi
+	done
+	echo $colValue
+}
+
+function checkOpponentByDiagonal()
+{
+	diagonalValue=0
+	if [ ${TicTacToeBoard[1]} == ${TicTacToeBoard[5]} ]
+	then
+		TicTacToeBoard[9]=$computer
+		displayBoard
+		diagonalValue=1
+	fi
+}
 function playerVsComp()
 {
 	echo "player symbol : "$player
@@ -165,7 +228,6 @@ function playerVsComp()
 
 		while [ $counter -le 9 ]
 		do
-
 			if [ $nextPlayer -eq 1 ]
 			then
 			read -p "Enter Cell Number" cell
@@ -176,11 +238,21 @@ function playerVsComp()
 
 			if [ $nextPlayer -eq 0 ]
 			then
-				compVal=$(($RANDOM%9+1))
-				selectSell $computer $compVal
 				nextPlayer=1
+				compVal=$(($RANDOM%9+1))
+				checkOpponentBlockByRow
+			        if [ $flag -eq 0 ]
+           			then
+               				selectSell $computer $compVal
+           			fi
+
+				checkOpponentBlockByColumn
+				if [ $colValue -eq 0 ]
+				then
+					selectSell $computer $compVal
+				fi
 			fi
-	done
+		done
 }
 
 
@@ -201,4 +273,5 @@ toss=$(whoPlayFirst)
 
 playerVsComp
 }
+
 main
