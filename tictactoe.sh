@@ -176,8 +176,8 @@ function playerVsComp()
 
 			if [ $nextPlayer -eq 0 ]
 			then
-				read -p "Enter Cell Number" cell
-				selectSell $computer $cell
+				compVal=$(($RANDOM%9+1))
+				selectSell $computer $compVal
 				nextPlayer=1
 			fi
 	done
