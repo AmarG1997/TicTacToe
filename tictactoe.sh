@@ -59,6 +59,7 @@ function getWinner()
 	rowCheck=$(rowCheck)
 	colCheck=$(columnCheck)
 	digCheck=$(diagonalCheck)
+
 	if [[ $rowCheck -eq 0 || $colCheck -eq 0 || $digCheck -eq 0 ]]
 	then
 		echo "Win"
@@ -148,8 +149,8 @@ function diagonalCheck()
 
 function checkOpponentBlockByRow()
 {
-   for (( i=1; i<=7; i+=3 ))
-   do
+	for (( i=1; i<=7; i+=3 ))
+	do
 		if [ $winCheck -eq 0 ]
 		then
 			if [[ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+1))]} && ${TicTacToeBoard[(($i+2))]} == $(($i+2)) && ${TicTacToeBoard[$i]} == $1 ]]
@@ -285,18 +286,18 @@ function checkCenter()
 
 function checkDiamond()
 {
-		for (( i=2; i<=8; i=$(($i+2)) ))
-		do
-			if [ $winCheck -eq 0 ]
+	for (( i=2; i<=8; i=$(($i+2)) ))
+	do
+		if [ $winCheck -eq 0 ]
+		then
+			if [ ${TicTacToeBoard[$i]} != $player ] && [ ${TicTacToeBoard[$i]} != $computer ]
 			then
-				if [ ${TicTacToeBoard[$i]} != $player ] && [ ${TicTacToeBoard[$i]} != $computer ]
-				then
-					TicTacToeBoard[$i]=$computer
-					winCheck=1
-					displayBoard
-				fi
+				TicTacToeBoard[$i]=$computer
+				winCheck=1
+				displayBoard
 			fi
-		done
+		fi
+	done
 }
 
 function playerVsComp()
@@ -304,33 +305,40 @@ function playerVsComp()
 	echo "player symbol : "$player
 	echo "computer symbol : "$computer
 
-		while [ $counter -le 9 ]
-		do
-			if [ $nextPlayer -eq 1 ]
-			then
+	while [ $counter -le 9 ]
+	do
+		if [ $nextPlayer -eq 1 ]
+		then
 			read -p "Enter Cell Number" cell
+			counter=$(($counter+1))
+			selectSell $player $cell
+			nextPlayer=0
+		fi
 
-				selectSell $player $cell
-				nextPlayer=0
-			fi
-
-			if [ $nextPlayer -eq 0 ]
-			then
-				nextPlayer=1
-			   winCheck=0
-				checkOpponentBlockByRow $computer
-				checkOpponentBlockByRow $player
-				checkOpponentBlockByColumn $computer
-				checkOpponentBlockByColumn $player
-				checkOpponentByDiagonal
-				checkCorner
-				checkCenter
-				checkDiamond
-				getWinner
-			fi
+		if [ $nextPlayer -eq 0 ]
+		then
+			nextPlayer=1
+		   winCheck=0
+			checkOpponentBlockByRow $computer
+			checkOpponentBlockByRow $player
+			checkOpponentBlockByColumn $computer
+			checkOpponentBlockByColumn $player
+			checkOpponentByDiagonal
+			checkCorner
+			checkCenter
+			checkDiamond
+			getWinner
+		fi
 		done
 }
 
+function draw()
+{
+	if [ $counter -eq 10 ]
+	then
+		echo "Match Draw"
+	fi
+}
 
 function main()
 {
@@ -347,5 +355,6 @@ function main()
 	fi
 	displayBoard
 	playerVsComp
+	draw
 }
 main
