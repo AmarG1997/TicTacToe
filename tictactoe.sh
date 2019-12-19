@@ -220,6 +220,43 @@ function checkOpponentByDiagonal()
 		displayBoard
 		diagonalValue=1
 	fi
+
+	if [ ${TicTacToeBoard[9]} == ${TicTacToeBoard[1]} ]
+	then
+		TicTacToeBoard[5]=$computer
+		displayBoard
+		diagonalValue=1
+	fi
+
+	if [ ${TicTacToeBoard[5]} == ${TicTacToeBoard[9]} ]
+	then
+		TicTacToeBoard[1]=$computer
+		displayBoard
+		diagonalValue=1
+	fi
+
+	if [ ${TicTacToeBoard[3]} == ${TicTacToeBoard[5]} ]
+	then
+		TicTacToeBoard[7]=$computer
+		displayBoard
+		diagonalValue=1
+	fi
+
+	if [ ${TicTacToeBoard[5]} == ${TicTacToeBoard[7]} ]
+	then
+		TicTacToeBoard[3]=$computer
+		displayBoard
+		diagonalValue=1
+	fi
+
+	if [ ${TicTacToeBoard[3]} == ${TicTacToeBoard[7]} ]
+	then
+		TicTacToeBoard[5]=$computer
+		displayBoard
+		diagonalValue=1
+	fi
+
+	echo $diagonalValue
 }
 function playerVsComp()
 {
