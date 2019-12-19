@@ -76,7 +76,6 @@ function selectSell()
 		then
 			TicTacToeBoard[$cell]=$playerVal
 			counter=$(($counter+1))
-			echo "board display"
 			displayBoard
 			rowCheck=$(rowCheck)
 			colCheck=$(columnCheck)
@@ -98,8 +97,6 @@ function selectSell()
 				echo "Win"
 				exit;
 			fi
-		else
-			selectSell
 
 		fi
 }
@@ -161,103 +158,134 @@ function diagonalCheck()
 
 function checkOpponentBlockByRow()
 {
-   flag=0
-   for (( i=1; i<=6; i+=3 ))
+   winCheck=0
+   for (( i=1; i<=7; i+=3 ))
    do
-	if [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[$i+1]} ]
-	then
-		TicTacToeBoard[$(($i + 2))]=$computer
-		echo "array ----> ${TicTacToeBoard[@]}"
-		flag=1
-		displayBoard
+		if [[ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+1))]} && ${TicTacToeBoard[(($i+2))]} == $(($i+2)) ]]
+		then
+			TicTacToeBoard[$(($i + 2))]=$computer
+			winCheck=1
+			displayBoard
 
-	elif [ ${TicTacToeBoard[$i+1]} == ${TicTacToeBoard[(($i+2))]} ]
-	then
-		TicTacToeBoard[$i]=$computer
-		flag=1
-      elif [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[$(($i+3))]} ]
+		elif [[ ${TicTacToeBoard[(($i+1))]} == ${TicTacToeBoard[(($i+2))]} && ${TicTacToeBoard[$i]} == $i ]]
+		then
+			TicTacToeBoard[$i]=$computer
+			winCheck=1
+			displayBoard
+
+      elif [[ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+3))]} && ${TicTacToeBoard[(($i+1))]} == $(($i+1)) ]]
       then
             TicTacToeBoard[(($i+1))]=$computer
-            flag=1
+            winCheck=1
+				displayBoard
+
       fi
    done
-   echo $flag
 }
 
 function checkOpponentBlockByColumn()
 {
-	colValue=0
-	for (( i=1; i<4; i++ ))
-	do
-		if [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[$i+3]} ]
+	if [ $winCheck -eq 0 ]
+	then
+		for (( i=1; i<4; i++ ))
+		do
+		if [[ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+3))]} && ${TicTacToeBoard[(($i+6))]} == $(($i+6)) ]]
 		then
 			TicTacToeBoard[$(($i + 6))]=$computer
-			echo "array ----> ${TicTacToeBoard[@]}"
-			colValue=1
+			winCheck=1
 			displayBoard
 
-		elif [ ${TicTacToeBoard[$i+3]} == ${TicTacToeBoard[(($i+6))]} ]
+		elif [[ ${TicTacToeBoard[(($i+3))]} == ${TicTacToeBoard[(($i+6))]} && ${TicTacToeBoard[$i]} == $i ]]
 		then
 			TicTacToeBoard[$i]=$computer
-			colValue=1
+			winCheck=1
 			displayBoard
-		elif [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[$(($i+6))]} ]
+
+		elif [[ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[$(($i+6))]} && ${TicTacToeBoard[(($i+3))]} == $(($i+3)) ]]
 		then
 			TicTacToeBoard[(($i+3))]=$computer
-			colValue=1
+			winCheck=1
 			displayBoard
 		fi
 	done
-	echo $colValue
+	fi
 }
 
 function checkOpponentByDiagonal()
 {
-	diagonalValue=0
+	if [ $winCheck -eq 0 ]
+	then
 	if [ ${TicTacToeBoard[1]} == ${TicTacToeBoard[5]} ]
 	then
 		TicTacToeBoard[9]=$computer
+		winCheck=1
 		displayBoard
-		diagonalValue=1
+
 	fi
 
 	if [ ${TicTacToeBoard[9]} == ${TicTacToeBoard[1]} ]
 	then
 		TicTacToeBoard[5]=$computer
+		winCheck=1
 		displayBoard
-		diagonalValue=1
+
 	fi
 
 	if [ ${TicTacToeBoard[5]} == ${TicTacToeBoard[9]} ]
 	then
 		TicTacToeBoard[1]=$computer
+		winCheck=1
 		displayBoard
-		diagonalValue=1
+
 	fi
 
 	if [ ${TicTacToeBoard[3]} == ${TicTacToeBoard[5]} ]
 	then
 		TicTacToeBoard[7]=$computer
+		winCheck=1
 		displayBoard
-		diagonalValue=1
+
 	fi
 
 	if [ ${TicTacToeBoard[5]} == ${TicTacToeBoard[7]} ]
 	then
 		TicTacToeBoard[3]=$computer
+		winCheck=1
 		displayBoard
-		diagonalValue=1
+
 	fi
 
 	if [ ${TicTacToeBoard[3]} == ${TicTacToeBoard[7]} ]
 	then
 		TicTacToeBoard[5]=$computer
+		winCheck=1
 		displayBoard
-		diagonalValue=1
-	fi
 
-	echo $diagonalValue
+	fi
+	fi
 }
+
+function checkCorner()
+{
+	if [ $winCheck -eq 0 ]
+	then
+	for (( i=1; i<8; i=$(($i+6)) ))
+	do
+		if [ ${TicTacToeBoard[i]} != $player ] && [ ${TicTacToeBoard[$i]} != $computer ]
+		then
+				TicTacToeBoard[$i]=$computer
+				displayBoard
+				break;
+		elif [ ${TicTacToeBoard[(($i+2))]} != $player ] && [ ${TicTacToeBoard[(($i+2))]} != $computer ]
+		then
+				TicTacToeBoard[(($i+2))]=$computer
+				displayBoard
+				break;
+		fi
+	done
+	fi
+}
+
 function playerVsComp()
 {
 	echo "player symbol : "$player
@@ -276,18 +304,10 @@ function playerVsComp()
 			if [ $nextPlayer -eq 0 ]
 			then
 				nextPlayer=1
-				compVal=$(($RANDOM%9+1))
 				checkOpponentBlockByRow
-			        if [ $flag -eq 0 ]
-           			then
-               				selectSell $computer $compVal
-           			fi
-
 				checkOpponentBlockByColumn
-				if [ $colValue -eq 0 ]
-				then
-					selectSell $computer $compVal
-				fi
+				checkOpponentByDiagonal
+				checkCorner
 			fi
 		done
 }
@@ -295,20 +315,17 @@ function playerVsComp()
 
 function main()
 {
-
-resetBoard
-letterAssigned
-toss=$(whoPlayFirst)
-  if [ $toss -eq 0 ]
-      then
-         nextPlayer=1
-         echo "Player play first"
-      else
-         echo "Computer play first"
-         nextPlayer=0
-      fi
-
-playerVsComp
+	resetBoard
+	letterAssigned
+	toss=$(whoPlayFirst)
+	if [ $toss -eq 0 ]
+	then
+		nextPlayer=1
+		echo "Player play first"
+	else
+		echo "Computer play first"
+		nextPlayer=0
+	fi
+	playerVsComp
 }
-
 main
