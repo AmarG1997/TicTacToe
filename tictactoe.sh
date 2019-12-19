@@ -215,7 +215,7 @@ function checkOpponentByDiagonal()
 {
 	if [ $winCheck -eq 0 ]
 	then
-	if [ ${TicTacToeBoard[1]} == ${TicTacToeBoard[5]} ]
+	if [[ ${TicTacToeBoard[1]} == ${TicTacToeBoard[5]} && ${TicTacToeBoard[9]} == 9 ]]
 	then
 		TicTacToeBoard[9]=$computer
 		winCheck=1
@@ -223,7 +223,7 @@ function checkOpponentByDiagonal()
 
 	fi
 
-	if [ ${TicTacToeBoard[9]} == ${TicTacToeBoard[1]} ]
+	if [[ ${TicTacToeBoard[9]} == ${TicTacToeBoard[1]} && ${TicTacToeBoard[5]} == 5 ]]
 	then
 		TicTacToeBoard[5]=$computer
 		winCheck=1
@@ -231,7 +231,7 @@ function checkOpponentByDiagonal()
 
 	fi
 
-	if [ ${TicTacToeBoard[5]} == ${TicTacToeBoard[9]} ]
+	if [[ ${TicTacToeBoard[5]} == ${TicTacToeBoard[9]} && ${TicTacToeBoard[1]} == 1 ]]
 	then
 		TicTacToeBoard[1]=$computer
 		winCheck=1
@@ -239,7 +239,7 @@ function checkOpponentByDiagonal()
 
 	fi
 
-	if [ ${TicTacToeBoard[3]} == ${TicTacToeBoard[5]} ]
+	if [[ ${TicTacToeBoard[3]} == ${TicTacToeBoard[5]} && ${TicTacToeBoard[7]} == 7 ]]
 	then
 		TicTacToeBoard[7]=$computer
 		winCheck=1
@@ -247,7 +247,7 @@ function checkOpponentByDiagonal()
 
 	fi
 
-	if [ ${TicTacToeBoard[5]} == ${TicTacToeBoard[7]} ]
+	if [[ ${TicTacToeBoard[5]} == ${TicTacToeBoard[7]} && ${TicTacToeBoard[3]} == 3 ]]
 	then
 		TicTacToeBoard[3]=$computer
 		winCheck=1
@@ -255,7 +255,7 @@ function checkOpponentByDiagonal()
 
 	fi
 
-	if [ ${TicTacToeBoard[3]} == ${TicTacToeBoard[7]} ]
+	if [[ ${TicTacToeBoard[3]} == ${TicTacToeBoard[7]} && ${TicTacToeBoard[5]} == 5 ]]
 	then
 		TicTacToeBoard[5]=$computer
 		winCheck=1
@@ -275,17 +275,27 @@ function checkCorner()
 		then
 				TicTacToeBoard[$i]=$computer
 				displayBoard
+				winCheck=1
 				break;
 		elif [ ${TicTacToeBoard[(($i+2))]} != $player ] && [ ${TicTacToeBoard[(($i+2))]} != $computer ]
 		then
 				TicTacToeBoard[(($i+2))]=$computer
 				displayBoard
+				winCheck=1
 				break;
 		fi
 	done
 	fi
 }
 
+function checkCenter()
+{
+	if [[ $winCheck -eq 0 && ${TicTacToeBoard[5]} == 5 ]]
+	then
+		TicTacToeBoard[5]=$computer
+		winCheck=1
+	fi
+}
 function playerVsComp()
 {
 	echo "player symbol : "$player
@@ -308,6 +318,7 @@ function playerVsComp()
 				checkOpponentBlockByColumn
 				checkOpponentByDiagonal
 				checkCorner
+				checkCenter
 			fi
 		done
 }
