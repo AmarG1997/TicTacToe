@@ -12,6 +12,7 @@ player=""
 computer=""
 nextPlayer=o
 counter=0
+cellNo=0
 
 function resetBoard()
 {
@@ -56,13 +57,13 @@ function displayBoard()
 
 function getWinner()
 {
-	rowCheck=$(rowCheck)
-	colCheck=$(columnCheck)
+	rowCheck
+	columnCheck
 	digCheck=$(diagonalCheck)
 
-	if [[ $rowCheck -eq 0 || $colCheck -eq 0 || $digCheck -eq 0 ]]
+	if [[ $row -eq 0 || $column -eq 0 || $digCheck -eq 0 ]]
 	then
-		echo "Win"
+		echo "Winner is "${TicTacToeBoard[$cellNo]}
 		exit;
 	fi
 }
@@ -88,7 +89,6 @@ function selectSell()
 			counter=$(($counter+1))
 			displayBoard
 			getWinner
-
 		fi
 }
 
@@ -100,12 +100,12 @@ function rowCheck()
 			if [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+1))]} ] && [ ${TicTacToeBoard[$i+1]} == ${TicTacToeBoard[(($i+2))]} ]
 			then
 				row=0
+				cellNo=$i
 				break;
 			else
 				row=1
 			fi
 		done
-	echo $row
 }
 
 function columnCheck()
@@ -116,12 +116,12 @@ function columnCheck()
 		if [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+3))]} ] && [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+6))]} ]
 		then
 				column=0
+				cellNo=$i
 				break;
 		else
 				column=1
 		fi
 	done
-	echo $column
 }
 
 function diagonalCheck()
@@ -131,7 +131,8 @@ function diagonalCheck()
 		if [ ${TicTacToeBoard[1]} == ${TicTacToeBoard[5]} ] && [ ${TicTacToeBoard[1]} == ${TicTacToeBoard[9]} ] 
 		then
 			diagonal=0
-		break;
+			cellNo=5
+			break;
 		else
 			diagonal=1
 		fi
@@ -139,6 +140,7 @@ function diagonalCheck()
 		if [ ${TicTacToeBoard[3]} == ${TicTacToeBoard[5]} ] && [ ${TicTacToeBoard[3]} == ${TicTacToeBoard[7]} ]
 		then
 			diagonal=0
+			cellNo=3
 			break;
 		else
 			diagonal=1
@@ -318,7 +320,7 @@ function playerVsComp()
 		if [ $nextPlayer -eq 0 ]
 		then
 			nextPlayer=1
-		   winCheck=0
+			winCheck=0
 			checkOpponentBlockByRow $computer
 			checkOpponentBlockByRow $player
 			checkOpponentBlockByColumn $computer
