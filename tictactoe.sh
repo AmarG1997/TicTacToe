@@ -68,7 +68,7 @@ function getWinner()
 	fi
 }
 
-function selectSell()
+function selectCell()
 {
 	local flag=0
 	cell=$2
@@ -313,7 +313,7 @@ function playerVsComp()
 		then
 			read -p "Enter Cell Number" cell
 			counter=$(($counter+1))
-			selectSell $player $cell
+			selectCell $player $cell
 			nextPlayer=0
 		fi
 
