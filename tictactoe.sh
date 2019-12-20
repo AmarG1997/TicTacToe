@@ -57,9 +57,9 @@ function getWinner()
 {
 	rowCheck
 	columnCheck
-	digCheck=$(diagonalCheck)
+	diagonalCheck
 
-	if [[ $row -eq 0 || $column -eq 0 || $digCheck -eq 0 ]]
+	if [[ $row -eq 0 || $column -eq 0 || $diagonal -eq 0 ]]
 	then
 		echo "Winner is "${TicTacToeBoard[$cellNo]}
 		exit;
@@ -144,7 +144,6 @@ function diagonalCheck()
 			diagonal=1
 		fi
 	done
-	echo $diagonal
 }
 
 function checkOpponentBlockByRow()
@@ -212,7 +211,6 @@ function checkOpponentByDiagonal()
 			TicTacToeBoard[9]=$computer
 			winCheck=1
 			displayBoard
-
 		fi
 
 		if [[ ${TicTacToeBoard[9]} == ${TicTacToeBoard[1]} && ${TicTacToeBoard[5]} == 5 ]]
@@ -323,7 +321,8 @@ function playerVsComputer()
 			checkOpponentBlockByRow $player
 			checkOpponentBlockByColumn $computer
 			checkOpponentBlockByColumn $player
-			checkOpponentByDiagonal
+			checkOpponentByDiagonal $computer
+			checkOpponentByDiagonal $player
 			checkCorner
 			checkCenter
 			checkDiamond
