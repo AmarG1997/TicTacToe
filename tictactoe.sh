@@ -51,8 +51,6 @@ function displayBoard()
 	echo -e "--- --- --- --- ---\n  ${TicTacToeBoard[1]}   |   ${TicTacToeBoard[2]}   |   ${TicTacToeBoard[3]}"
 	echo -e "--- --- --- --- ---\n  ${TicTacToeBoard[4]}   |   ${TicTacToeBoard[5]}   |   ${TicTacToeBoard[6]}"
 	echo -e "--- --- --- --- ---\n  ${TicTacToeBoard[7]}   |   ${TicTacToeBoard[8]}   |   ${TicTacToeBoard[9]}"
-	echo ""
-	echo ""
 }
 
 function getWinner()
@@ -72,24 +70,24 @@ function selectCell()
 {
 	local flag=0
 	cell=$2
-	playerVal=$1
+	playerValue=$1
 
-	if [ ${TicTacToeBoard[$cell]} == "x" ] ||  [ ${TicTacToeBoard[$cell]} == "o" ]
-	then
-		echo "Select another cell"
-		counter=$(($counter-1))
-		playerVsComp
-	else
-		flag=1
-	fi
+		if [ ${TicTacToeBoard[$cell]} == "x" ] ||  [ ${TicTacToeBoard[$cell]} == "o" ]
+		then
+			echo "Select another cell"
+			counter=$(($counter-1))
+			playerVsComputer
+		else
+			flag=1
+		fi
 
-	if [ $flag -eq 1 ]
-	then
-		TicTacToeBoard[$cell]=$playerVal
-		counter=$(($counter+1))
-		displayBoard
-		getWinner
-	fi
+		if [ $flag -eq 1 ]
+		then
+			TicTacToeBoard[$cell]=$playerValue
+			counter=$(($counter+1))
+			displayBoard
+			getWinner
+		fi
 }
 
 function rowCheck()
@@ -301,7 +299,7 @@ function checkDiamond()
 	done
 }
 
-function playerVsComp()
+function playerVsComputer()
 {
 	echo "player symbol : "$player
 	echo "computer symbol : "$computer
@@ -333,7 +331,7 @@ function playerVsComp()
 	done
 }
 
-function draw()
+function matchDraw()
 {
 	if [ $counter -eq 10 ]
 	then
@@ -355,7 +353,7 @@ function main()
 		nextPlayer=0
 	fi
 	displayBoard
-	playerVsComp
-	draw
+	playerVsComputer
+	matchDraw
 }
 main
