@@ -282,7 +282,7 @@ function checkCenter()
 	fi
 }
 
-function checkDiamond()
+function checkSides()
 {
 	for (( i=2; i<=8; i=$(($i+2)) ))
 	do
@@ -325,7 +325,7 @@ function playerVsComputer()
 			checkOpponentByDiagonal $player
 			checkCorner
 			checkCenter
-			checkDiamond
+			checkSides
 			getWinner
 		fi
 	done
