@@ -332,7 +332,7 @@ function playerVsComputer()
 		done
 }
 
-function matchDraw()
+function checkMatchDrawOrNot()
 {
 	if [ $counter -eq 10 ]
 	then
@@ -355,6 +355,6 @@ function main()
 	fi
 	displayBoard
 	playerVsComputer
-	matchDraw
+	checkMatchDrawOrNot
 }
 main
