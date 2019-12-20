@@ -74,38 +74,38 @@ function selectCell()
 	cell=$2
 	playerVal=$1
 
-		if [ ${TicTacToeBoard[$cell]} == "x" ] ||  [ ${TicTacToeBoard[$cell]} == "o" ]
-		then
-			echo "Select another cell"
-			counter=$(($counter-1))
-			playerVsComp
-		else
-			flag=1
-		fi
+	if [ ${TicTacToeBoard[$cell]} == "x" ] ||  [ ${TicTacToeBoard[$cell]} == "o" ]
+	then
+		echo "Select another cell"
+		counter=$(($counter-1))
+		playerVsComp
+	else
+		flag=1
+	fi
 
-		if [ $flag -eq 1 ]
-		then
-			TicTacToeBoard[$cell]=$playerVal
-			counter=$(($counter+1))
-			displayBoard
-			getWinner
-		fi
+	if [ $flag -eq 1 ]
+	then
+		TicTacToeBoard[$cell]=$playerVal
+		counter=$(($counter+1))
+		displayBoard
+		getWinner
+	fi
 }
 
 function rowCheck()
 {
-		row=0
-		for (( i=1; i<=$BOARD_SIZE; i=$((i+3)) ))
-		do
-			if [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+1))]} ] && [ ${TicTacToeBoard[$i+1]} == ${TicTacToeBoard[(($i+2))]} ]
-			then
-				row=0
-				cellNo=$i
-				break;
-			else
-				row=1
-			fi
-		done
+	row=0
+	for (( i=1; i<=$BOARD_SIZE; i=$((i+3)) ))
+	do
+		if [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+1))]} ] && [ ${TicTacToeBoard[$i+1]} == ${TicTacToeBoard[(($i+2))]} ]
+		then
+			row=0
+			cellNo=$i
+			break;
+		else
+			row=1
+		fi
+	done
 }
 
 function columnCheck()
@@ -115,11 +115,11 @@ function columnCheck()
 	do
 		if [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+3))]} ] && [ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+6))]} ]
 		then
-				column=0
-				cellNo=$i
-				break;
+			column=0
+			cellNo=$i
+			break;
 		else
-				column=1
+			column=1
 		fi
 	done
 }
@@ -167,54 +167,53 @@ function checkOpponentBlockByRow()
 				winCheck=1
 				displayBoard
 
-   	   elif [[ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+2))]} && ${TicTacToeBoard[(($i+1))]} == $(($i+1)) && ${TicTacToeBoard[$i]} == $1 ]]
-      	then
-            TicTacToeBoard[(($i+1))]=$computer
-            winCheck=1
+   			elif [[ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+2))]} && ${TicTacToeBoard[(($i+1))]} == $(($i+1)) && ${TicTacToeBoard[$i]} == $1 ]]
+      			then
+            			TicTacToeBoard[(($i+1))]=$computer
+            			winCheck=1
 				displayBoard
 			fi
-      fi
-   done
+      		fi
+   	done
 }
 
 function checkOpponentBlockByColumn()
 {
-		for (( i=1; i<4; i++ ))
-		do
-			if [ $winCheck -eq 0 ]
+	for (( i=1; i<4; i++ ))
+	do
+		if [ $winCheck -eq 0 ]
+		then
+			if [[ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+3))]} && ${TicTacToeBoard[(($i+6))]} == $(($i+6)) && ${TicTacToeBoard[$i]} == $1 ]]
 			then
-				if [[ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[(($i+3))]} && ${TicTacToeBoard[(($i+6))]} == $(($i+6)) && ${TicTacToeBoard[$i]} == $1 ]]
-				then
-					TicTacToeBoard[$(($i + 6))]=$computer
-					winCheck=1
-					displayBoard
+				TicTacToeBoard[$(($i + 6))]=$computer
+				winCheck=1
+				displayBoard
 
-				elif [[ ${TicTacToeBoard[(($i+3))]} == ${TicTacToeBoard[(($i+6))]} && ${TicTacToeBoard[$i]} == $i && ${TicTacToeBoard[(($i+3))]} == $1 ]]
-				then
-					TicTacToeBoard[$i]=$computer
-					winCheck=1
-					displayBoard
+			elif [[ ${TicTacToeBoard[(($i+3))]} == ${TicTacToeBoard[(($i+6))]} && ${TicTacToeBoard[$i]} == $i && ${TicTacToeBoard[(($i+3))]} == $1 ]]
+			then
+				TicTacToeBoard[$i]=$computer
+				winCheck=1
+				displayBoard
 
-				elif [[ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[$(($i+6))]} && ${TicTacToeBoard[(($i+3))]} == $(($i+3)) && ${TicTacToeBoard[$i]} == $1 ]]
-				then
+			elif [[ ${TicTacToeBoard[$i]} == ${TicTacToeBoard[$(($i+6))]} && ${TicTacToeBoard[(($i+3))]} == $(($i+3)) && ${TicTacToeBoard[$i]} == $1 ]]
+			then
 				TicTacToeBoard[(($i+3))]=$computer
 				winCheck=1
 				displayBoard
-				fi
 			fi
+		fi
 	done
 }
 
 function checkOpponentByDiagonal()
 {
-		if [ $winCheck -eq 0 ]
-		then
+	if [ $winCheck -eq 0 ]
+	then
 		if [[ ${TicTacToeBoard[1]} == ${TicTacToeBoard[5]} && ${TicTacToeBoard[9]} == 9 ]]
 		then
 			TicTacToeBoard[9]=$computer
 			winCheck=1
 			displayBoard
-
 		fi
 
 		if [[ ${TicTacToeBoard[9]} == ${TicTacToeBoard[1]} && ${TicTacToeBoard[5]} == 5 ]]
@@ -331,7 +330,7 @@ function playerVsComp()
 			checkDiamond
 			getWinner
 		fi
-		done
+	done
 }
 
 function draw()
